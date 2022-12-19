@@ -148,7 +148,7 @@ const PlaceBidInput = ({ className }: { className: string }) => {
   return (
     <div className="flex flex-row">
       <input
-        className="border rounded px-2 mr-4"
+        className="border rounded px-2 mr-2"
         onChange={(e) => checkValidBid(e.target.value)}
         placeholder="0.00"
       ></input>
