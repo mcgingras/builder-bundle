@@ -1,13 +1,15 @@
 {
   "name": "builder-bundle",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Headless UI component library for nouns builder ecosystem.",
-  "main": "./dist/esm/index.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "scripts": {
-    "build": "npm run build:esm",
+    "prepare": "npm run build",
+    "build": "yarn build:esm && yarn build:cjs",
     "build:esm": "tsc",
-    "prepare": "npm run build"
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs"
   },
   "keywords": [
     "nouns",
