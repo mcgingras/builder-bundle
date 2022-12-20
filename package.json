@@ -9,7 +9,8 @@
     "prepare": "npm run build",
     "build": "yarn build:esm && yarn build:cjs",
     "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs"
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "pack-local": "npm pack --pack-destination ~"
   },
   "keywords": [
     "nouns",
@@ -29,8 +30,7 @@
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
     "graphql-tag": "^2.12.6",
-    "swr": "^2.0.0",
-    "wagmi": "^0.9.4"
+    "swr": "^2.0.0"
   },
   "repository": {
     "type": "git",

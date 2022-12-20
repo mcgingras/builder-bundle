@@ -24,17 +24,15 @@ const Basic = () => {
                 <ActiveAuction.Countdown className="text-xl" />
               </div>
             </div>
-            <ActiveAuction.PlaceBidInput className="w-full bg-gray-100 px-2 py-2 rounded" />
-            {/* <ActiveAuction.SettleAuctionButton className="w-full bg-gray-100 px-2 py-2 rounded" /> */}
-            <ActiveAuction.ActiveBids>
-              {(bids) => (
+            {/* <ActiveAuction.ActiveBids>
+              {(bids: any) => (
                 <>
                   <button className="w-full bg-gray-100 px-2 py-2 rounded">
                     Bid History
                   </button>
                 </>
               )}
-            </ActiveAuction.ActiveBids>
+            </ActiveAuction.ActiveBids> */}
           </div>
         </div>
       </div>
