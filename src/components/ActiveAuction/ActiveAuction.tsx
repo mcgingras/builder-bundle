@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Countdown from "../Countdown";
 import { useAuction } from "../../hooks/useAuction";
 import { useBidsForToken } from "../../hooks/useBids";
@@ -96,15 +96,10 @@ const AuctionCountdown = ({ className }: { className: string }) => {
 const ActiveBids = ({ children }: { children: any }) => {
   const context = useBuilderContext();
   const { bids } = useBidsForToken(context?.auctionAddress || "", 1);
-  console.log("bids bids bids", bids);
-  const bidss = [1, 2, 3, 4];
+  console.log(bids);
+  const tempBids = [{ bidder: "0xmcg", amount: 10 }];
 
-  // nextJS hack
-  if (typeof window === "undefined") {
-    return <></>;
-  } else {
-    return children(bidss);
-  }
+  return children(tempBids);
 };
 
 ActiveAuction.ActiveBids = ActiveBids;

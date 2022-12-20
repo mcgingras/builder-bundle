@@ -24,7 +24,8 @@ const Basic = () => {
                 <ActiveAuction.Countdown className="text-xl" />
               </div>
             </div>
-            {/* <ActiveAuction.ActiveBids>
+
+            <ActiveAuction.ActiveBids>
               {(bids: any) => (
                 <>
                   <button className="w-full bg-gray-100 px-2 py-2 rounded">
@@ -32,7 +33,7 @@ const Basic = () => {
                   </button>
                 </>
               )}
-            </ActiveAuction.ActiveBids> */}
+            </ActiveAuction.ActiveBids>
           </div>
         </div>
       </div>
