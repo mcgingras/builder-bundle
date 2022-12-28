@@ -6,14 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "bb-u": "npm uninstall builder-bundle",
+    "bb-i": "npm install file:~/builder-bundle-0.0.5.tgz -f"
   },
   "dependencies": {
     "@next/font": "13.0.7",
     "@types/node": "18.11.17",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.9",
-    "builder-bundle": "file:~/builder-bundle-0.0.3.tgz",
+    "builder-bundle": "file:../../../../builder-bundle-0.0.5.tgz",
     "eslint": "8.30.0",
     "eslint-config-next": "13.0.7",
     "next": "13.0.7",

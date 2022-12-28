@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { ethers } from "ethers";
 import Countdown from "../Countdown";
 import { useAuction } from "../../hooks/useAuction";
 import { useBidsForToken } from "../../hooks/useBids";
@@ -18,6 +19,37 @@ const ActiveAuction = ({ className }: { className: string }) => {
         />
       )}
     </>
+  );
+};
+
+const SettleAuctionButton = ({ className }: { className: string }) => {
+  const context = useBuilderContext();
+
+  if (typeof window !== "undefined") {
+    const settleAuctionABI = [
+      {
+        inputs: [],
+        name: "settleCurrentAndCreateNewAuction",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+    ];
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    provider.send("eth_requestAccounts", []);
+    // const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      context?.auctionAddress || "",
+      settleAuctionABI,
+      provider
+    );
+    console.log(contract);
+  }
+
+  return (
+    <div>
+      <span className={className}>dogs</span>
+    </div>
   );
 };
 
@@ -95,13 +127,15 @@ const AuctionCountdown = ({ className }: { className: string }) => {
 
 const ActiveBids = ({ children }: { children: any }) => {
   const context = useBuilderContext();
-  const { bids } = useBidsForToken(context?.auctionAddress || "", 1);
-  console.log(bids);
-  const tempBids = [{ bidder: "0xmcg", amount: 10 }];
-
-  return children(tempBids);
+  const { data } = useAuction(context?.collectionAddress || "");
+  const activeMarket = data?.nouns?.nounsActiveMarket;
+  const tokenId = activeMarket?.tokenId;
+  const { bids } = useBidsForToken(context?.collectionAddress || "", tokenId);
+  console.log("bids", bids);
+  return children(bids);
 };
 
+ActiveAuction.SettleAuctionButton = SettleAuctionButton;
 ActiveAuction.ActiveBids = ActiveBids;
 ActiveAuction.Title = AuctionTitleMetadata;
 ActiveAuction.Price = AuctionPriceMetadata;

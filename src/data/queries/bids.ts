@@ -8,14 +8,23 @@ import gql from "graphql-tag";
  * 0x658d3a1b6dabcfbaa8b75cc182bf33efefdc200d
  */
 export const ALL_BIDS_QUERY = gql`
-  query ListCollections($auctionAddress: [String!]) {
+  query GetAllBids($paginationLimit: Int!, $collectionAddresses: [String!]) {
     nouns {
       nounsEvents(
-        where: { auctionAddresses: $auctionAddress }
-        filter: { nounsEventTypes: NOUNS_BUILDER_AUCTION_EVENT }
+        filter: {
+          nounsEventTypes: NOUNS_BUILDER_AUCTION_EVENT
+          nounsBuilderAuctionEventType: NOUNS_BUILDER_AUCTION_AUCTION_BID_EVENT
+        }
+        networks: { network: ETHEREUM, chain: MAINNET }
+        sort: { sortKey: CREATED, sortDirection: DESC }
+        where: { collectionAddresses: $collectionAddresses }
+        pagination: { limit: $paginationLimit }
       ) {
         nodes {
-          eventType
+          collectionAddress
+          transactionInfo {
+            blockNumber
+          }
           properties {
             ... on NounsBuilderAuctionEvent {
               __typename
@@ -23,14 +32,13 @@ export const ALL_BIDS_QUERY = gql`
               properties {
                 ... on NounsBuilderAuctionAuctionBidEventProperties {
                   __typename
-                  amount
                   bidder
+                  tokenId
                   amountPrice {
-                    nativePrice {
+                    chainTokenPrice {
                       decimal
                     }
                   }
-                  tokenId
                 }
               }
             }

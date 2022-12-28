@@ -1,6 +1,6 @@
 {
   "name": "builder-bundle",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Headless UI component library for nouns builder ecosystem.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
