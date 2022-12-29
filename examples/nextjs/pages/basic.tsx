@@ -1,5 +1,4 @@
 import { BuilderProvider, ActiveAuction } from "builder-bundle";
-
 const BUILDER_COLLECTION_ADDRESS = "0xdf9b7d26c8fc806b1ae6273684556761ff02d422";
 const BUILDER_AUCTION_ADDRESS = "0x658d3a1b6dabcfbaa8b75cc182bf33efefdc200d";
 
@@ -24,10 +23,9 @@ const Basic = () => {
                 <ActiveAuction.Countdown className="text-xl" />
               </div>
             </div>
-            <ActiveAuction.PlaceBidInput className="w-full bg-gray-100 px-2 py-2 rounded" />
-            {/* <ActiveAuction.SettleAuctionButton className="w-full bg-gray-100 px-2 py-2 rounded" /> */}
+            <ActiveAuction.SettleAuctionButton className="" />
             <ActiveAuction.ActiveBids>
-              {(bids) => (
+              {(bids: any) => (
                 <>
                   <button className="w-full bg-gray-100 px-2 py-2 rounded">
                     Bid History

@@ -19,35 +19,25 @@ async function fetcher(query: DocumentNode, vars?: any) {
   }
 }
 
-export const useBidsForToken = (auctionAddress: string, tokenId: number) => {
+export const useBidsForToken = (collectionAddress: string, tokenId: number) => {
   const tokenIdString = String(tokenId);
 
-  const { data } = useSWR(
-    `current-auction-${auctionAddress}-${tokenId}`,
-    async () =>
-      fetcher(ALL_BIDS_QUERY, {
-        auctionAddress,
-      })
+  const { data } = useSWR(`bids-${collectionAddress}-${tokenId}`, async () =>
+    fetcher(ALL_BIDS_QUERY, {
+      collectionAddresses: [collectionAddress],
+      paginationLimit: 5,
+    })
   );
 
-  console.log(auctionAddress);
-  console.log("data for bids", data);
-
   const results = data?.nouns?.nounsEvents?.nodes;
-  const bids = results?.filter((result: any) => {
-    return (
-      result.eventType === "NOUNS_BUILDER_AUCTION_EVENT" &&
-      result.properties.nounsBuilderAuctionEventType ===
-        "NOUNS_BUILDER_AUCTION_AUCTION_BID_EVENT"
-    );
-  });
+  console.log("data", results);
 
-  const parsedBids = bids
+  const parsedBids = results
     ?.map((bid: any) => {
       let data = bid.properties.properties;
 
       return {
-        amount: data.amount,
+        amount: data.amountPrice.chainTokenPrice.decimal,
         bidder: data.bidder,
         tokenId: data.tokenId,
       };

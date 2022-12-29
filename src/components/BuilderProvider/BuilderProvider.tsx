@@ -1,6 +1,5 @@
 import React from "react";
 import { BuilderContext } from "../../store/builderContext";
-import BuilderContextWagmiProvider from "../BuilderContextWagmiProvider";
 
 const BuilderProvider = ({
   collectionAddress,
@@ -18,9 +17,7 @@ const BuilderProvider = ({
         auctionAddress,
       }}
     >
-      <BuilderContextWagmiProvider infuraApi={""} alchemyApi={""}>
-        {children}
-      </BuilderContextWagmiProvider>
+      {children}
     </BuilderContext.Provider>
   );
 };
