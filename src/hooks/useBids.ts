@@ -10,6 +10,12 @@ export const client = new GraphQLClient("https://api.zora.co/graphql", {
   }),
 });
 
+const truncateString = (str: string, len: number) => {
+  return (
+    str.substring(0, len) + "..." + str.substring(str.length - len, str.length)
+  );
+};
+
 async function fetcher(query: DocumentNode, vars?: any) {
   try {
     const response = await client.request(query, vars);
@@ -35,10 +41,12 @@ export const useBidsForToken = (collectionAddress: string, tokenId: number) => {
   const parsedBids = results
     ?.map((bid: any) => {
       let data = bid.properties.properties;
+      console.log(data);
 
       return {
+        transactionHash: bid.transactionInfo.transactionHash,
         amount: data.amountPrice.chainTokenPrice.decimal,
-        bidder: data.bidder,
+        bidder: truncateString(data.bidder, 4),
         tokenId: data.tokenId,
       };
     })

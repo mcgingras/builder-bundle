@@ -131,7 +131,6 @@ const ActiveBids = ({ children }: { children: any }) => {
   const activeMarket = data?.nouns?.nounsActiveMarket;
   const tokenId = activeMarket?.tokenId;
   const { bids } = useBidsForToken(context?.collectionAddress || "", tokenId);
-  console.log("bids", bids);
   return children(bids);
 };
 

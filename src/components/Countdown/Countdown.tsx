@@ -18,7 +18,7 @@ const Countdown = ({
   });
 
   if (timeLeft < 0) {
-    return <p>The countdown has ended!</p>;
+    return <p>The auction has ended!</p>;
   }
 
   const hours = Math.floor(timeLeft / 3600 / 1000);
