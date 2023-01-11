@@ -47,7 +47,7 @@ export const getProposals = async (contract: any) => {
       const { proposalId, targets, calldatas, description, descriptionHash } =
         event.args as any;
 
-      const [proposal, state] = await Promise.all([
+      const [proposal] = await Promise.all([
         getProposalData(contract, proposalId),
       ]);
 
@@ -62,7 +62,6 @@ export const getProposals = async (contract: any) => {
         description,
         descriptionHash,
         proposal,
-        state,
       };
     })
   );

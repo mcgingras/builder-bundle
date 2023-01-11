@@ -1,15 +1,15 @@
 import React from "react";
 import { useAuctions } from "../../hooks/useAuctions";
-import useBuilderContext from "../../hooks/useBuilderContext";
+// import useBuilderContext from "../../hooks/useBuilderContext";
 
 const Auctions = ({ className }: { className: string }) => {
-  const context = useBuilderContext();
-  const { data } = useAuctions(context?.collectionAddress || "", 49);
+  // const context = useBuilderContext();
+  const { data } = useAuctions();
   console.log("data", data);
 
   return (
     <>
-      <p>hello</p>
+      <p className={className}>hello</p>
     </>
   );
 };
