@@ -1,22 +1,18 @@
 import React from "react";
 import { ethers } from "ethers";
 import Countdown from "../Countdown";
-import { useAuction } from "../../hooks/useAuction";
-import { useBidsForToken } from "../../hooks/useBids";
+import { useActiveAuction } from "../../hooks/useActiveAuction";
+import { useBidsForToken } from "../../hooks/useBidsForToken";
 import useBuilderContext from "../../hooks/useBuilderContext";
 import { useTokenMetadata } from "../../hooks/useTokenMetadata";
 
 const ActiveAuction = ({ className }: { className: string }) => {
-  const context = useBuilderContext();
-  const { data } = useAuction(context?.collectionAddress || "");
+  const { data } = useActiveAuction();
 
   return (
     <>
       {data && (
-        <ActiveAuctionImage
-          className={className}
-          tokenId={data?.nouns?.nounsActiveMarket?.tokenId}
-        />
+        <ActiveAuctionImage className={className} tokenId={data?.tokenId} />
       )}
     </>
   );
@@ -60,36 +56,23 @@ const ActiveAuctionImage = ({
   tokenId: string;
   className: string;
 }) => {
-  const context = useBuilderContext();
-
-  const { data: tokenMetadata } = useTokenMetadata(
-    context?.collectionAddress || "",
-    tokenId
-  );
+  const { token: tokenMetadata } = useTokenMetadata(tokenId);
 
   return (
     <>
-      {tokenMetadata && (
-        <img
-          src={tokenMetadata.token.token.metadata.image}
-          className={className}
-        />
-      )}
+      {tokenMetadata && <img src={tokenMetadata.image} className={className} />}
     </>
   );
 };
 
 const AuctionTitleMetadata = ({ className }: { className: string }) => {
-  const context = useBuilderContext();
-  const { data } = useAuction(context?.collectionAddress || "");
-  const activeMarket = data?.nouns?.nounsActiveMarket;
-  const daoInfo = data?.nouns?.nounsDaos.nodes[0];
+  const { data } = useActiveAuction();
 
   return (
     <>
-      {daoInfo && activeMarket && (
+      {data && (
         <span className={className}>
-          {daoInfo.name} {activeMarket.tokenId}
+          {data?.collectionName} {data?.tokenId}
         </span>
       )}
     </>
@@ -97,16 +80,13 @@ const AuctionTitleMetadata = ({ className }: { className: string }) => {
 };
 
 const AuctionPriceMetadata = ({ className }: { className: string }) => {
-  const context = useBuilderContext();
-  const { data } = useAuction(context?.collectionAddress || "");
-  const activeMarket = data?.nouns?.nounsActiveMarket;
+  const { data } = useActiveAuction();
 
   return (
     <>
-      {activeMarket && (
+      {data && (
         <span className={className}>
-          {activeMarket.highestBidPrice.nativePrice.decimal}{" "}
-          {activeMarket.highestBidPrice.nativePrice.currency.name}
+          {data.highestBidPrice} {data.highestBidCurrency}
         </span>
       )}
     </>
@@ -114,23 +94,18 @@ const AuctionPriceMetadata = ({ className }: { className: string }) => {
 };
 
 const AuctionCountdown = ({ className }: { className: string }) => {
-  const context = useBuilderContext();
-  const { data } = useAuction(context?.collectionAddress || "");
+  const { data } = useActiveAuction();
 
-  const activeMarket = data?.nouns?.nounsActiveMarket;
-  return (
-    activeMarket && (
-      <Countdown endTime={activeMarket.endTime} className={className} />
-    )
+  return data ? (
+    <Countdown endTime={parseInt(data?.endTime)} className={className} />
+  ) : (
+    <></>
   );
 };
 
 const ActiveBids = ({ children }: { children: any }) => {
-  const context = useBuilderContext();
-  const { data } = useAuction(context?.collectionAddress || "");
-  const activeMarket = data?.nouns?.nounsActiveMarket;
-  const tokenId = activeMarket?.tokenId;
-  const { bids } = useBidsForToken(context?.collectionAddress || "", tokenId);
+  const { data } = useActiveAuction();
+  const { bids } = useBidsForToken(data?.tokenId);
   return children(bids);
 };
 

@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { DocumentNode } from "graphql";
 import { GraphQLClient } from "graphql-request";
 import useBuilderContext from "./useBuilderContext";
-import { CURRENT_AUCTION_QUERY } from "../data/queries/currentAuction";
+import { ALL_AUCTIONS_QUERY } from "../data/queries/allAuctions";
 
 export const client = new GraphQLClient("https://api.zora.co/graphql", {
   method: "POST",
@@ -20,13 +20,13 @@ async function fetcher(query: DocumentNode, vars?: any) {
   }
 }
 
-export const useAuction = () => {
+export const useAuctions = () => {
   const context = useBuilderContext();
   const { data } = useSWR(
-    `current-auction-${context?.collectionAddress}`,
+    `all-auctions-${context?.collectionAddress}`,
     async () =>
-      fetcher(CURRENT_AUCTION_QUERY, {
-        collectionAddress: context?.collectionAddress,
+      fetcher(ALL_AUCTIONS_QUERY, {
+        collectionAddresses: [context?.collectionAddress],
       })
   );
 

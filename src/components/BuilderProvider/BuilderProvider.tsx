@@ -1,5 +1,6 @@
 import React from "react";
 import { BuilderContext } from "../../store/builderContext";
+import ContractProvider from "../ContractProvider/ContractProvider";
 
 const BuilderProvider = ({
   collectionAddress,
@@ -20,7 +21,7 @@ const BuilderProvider = ({
         governorAddress,
       }}
     >
-      {children}
+      <ContractProvider>{children}</ContractProvider>
     </BuilderContext.Provider>
   );
 };

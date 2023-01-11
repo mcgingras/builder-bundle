@@ -1,9 +1,7 @@
-import { useFetchProposals } from "../../hooks/useProposals";
-import useBuilderContext from "../../hooks/useBuilderContext";
+import { useProposals } from "../../hooks/useProposals";
 
 const Proposals = ({ children }: { children: any }) => {
-  const context = useBuilderContext();
-  const { proposals } = useFetchProposals(context?.governorAddress || "");
+  const { data: proposals } = useProposals();
 
   return children(proposals);
 };

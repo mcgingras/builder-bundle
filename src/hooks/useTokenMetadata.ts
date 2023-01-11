@@ -1,7 +1,9 @@
 import useSWR from "swr";
 import { DocumentNode } from "graphql";
 import { GraphQLClient } from "graphql-request";
+import useBuilderContext from "./useBuilderContext";
 import { TOKEN_METADATA_QUERY } from "../data/queries/tokenMetadata";
+import { Token } from "../shared/types";
 
 export const client = new GraphQLClient("https://api.zora.co/graphql", {
   method: "POST",
@@ -13,9 +15,14 @@ export const client = new GraphQLClient("https://api.zora.co/graphql", {
 async function fetcher(query: DocumentNode, vars?: any) {
   try {
     const response = await client.request(query, vars);
-    return response;
+    return {
+      description: response.token.token.description,
+      name: response.token.token.metadata.name,
+      image: response.token.token.metadata.image,
+    } as Token;
   } catch (err) {
     console.error(err);
+    return;
   }
 }
 
@@ -23,16 +30,16 @@ async function fetcher(query: DocumentNode, vars?: any) {
 // {
 //   refreshInterval: xxxxms,
 // }
-export const useTokenMetadata = (
-  collectionAddress: string,
-  tokenId: string
-) => {
-  const { data } = useSWR(`token-metadata-${tokenId}`, async () =>
-    fetcher(TOKEN_METADATA_QUERY, {
-      collectionAddress,
-      tokenId,
-    })
+export const useTokenMetadata = (tokenId: string | undefined) => {
+  const context = useBuilderContext();
+  const { data } = useSWR(
+    tokenId ? `token-metadata-${tokenId}` : null,
+    async () =>
+      fetcher(TOKEN_METADATA_QUERY, {
+        collectionAddress: context?.collectionAddress,
+        tokenId,
+      })
   );
 
-  return { data };
+  return { token: data };
 };
