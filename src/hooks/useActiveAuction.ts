@@ -1,35 +1,22 @@
 import useSWR from "swr";
 import { DocumentNode } from "graphql";
-import { GraphQLClient } from "graphql-request";
 import useBuilderContext from "./useBuilderContext";
-import { CURRENT_AUCTION_QUERY } from "../data/queries/currentAuction";
-import { Auction } from "../shared/types";
+import { CURRENT_AUCTION_QUERY } from "../data/graphql/queries/currentAuction";
+import { graphlQLClient } from "../data/graphql/client";
+import { toAuctionType } from "../shared/types";
 
-export const client = new GraphQLClient("https://api.zora.co/graphql", {
-  method: "POST",
-  headers: new Headers({
-    "Content-Type": "application/json",
-  }),
-});
+/**
+ * useActiveAuction
+ * fetches the current active auction.
+ */
 
 async function fetcher(query: DocumentNode, vars?: any) {
   try {
-    const response = await client.request(query, vars);
-
-    return {
-      ...response.nouns.nounsActiveMarket,
-      highestBidCurrency:
-        response.nouns.nounsActiveMarket.highestBidPrice.nativePrice.currency
-          .name,
-      highestBidPrice:
-        response.nouns.nounsActiveMarket.highestBidPrice.nativePrice.decimal,
-      collectionDescription: response.nouns.nounsDaos.nodes[0].description,
-      collectionName: response.nouns.nounsDaos.nodes[0].name,
-      collectionSymbol: response.nouns.nounsDaos.nodes[0].symbol,
-    } as Auction;
+    const response = await graphlQLClient.request(query, vars);
+    return toAuctionType(response.nouns.nounsActiveMarket);
   } catch (err) {
     console.error(err);
-    return;
+    throw new Error("Error");
   }
 }
 

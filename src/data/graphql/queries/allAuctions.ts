@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const ALL_AUCTIONS_QUERY = gql`
-  query currentAuction($collectionAddresses: [String!]) {
+  query allAuctions($collectionAddresses: [String!]) {
     nouns {
       nounsMarkets(
         where: { collectionAddresses: $collectionAddresses }

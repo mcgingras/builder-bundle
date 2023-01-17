@@ -1,16 +1,9 @@
 import useSWR from "swr";
 import { DocumentNode } from "graphql";
-import { GraphQLClient } from "graphql-request";
 import useBuilderContext from "./useBuilderContext";
-import { AUCTION_RANGE_QUERY } from "../data/queries/auctionRange";
-import { ALL_BIDS_QUERY } from "../data/queries/bids";
-
-export const client = new GraphQLClient("https://api.zora.co/graphql", {
-  method: "POST",
-  headers: new Headers({
-    "Content-Type": "application/json",
-  }),
-});
+import { AUCTION_RANGE_QUERY } from "../data/graphql/queries/auctionRange";
+import { graphlQLClient } from "../data/graphql/client";
+import { ALL_BIDS_QUERY } from "../data/graphql/queries/bids";
 
 const truncateString = (str: string, len: number) => {
   return (
@@ -20,7 +13,7 @@ const truncateString = (str: string, len: number) => {
 
 async function fetcher(query: DocumentNode, vars?: any) {
   try {
-    const response = await client.request(query, vars);
+    const response = await graphlQLClient.request(query, vars);
     return response;
   } catch (err) {
     console.error(err);
@@ -34,7 +27,6 @@ export const useBidsForTokenId = (tokenId: string | undefined) => {
     async () =>
       fetcher(AUCTION_RANGE_QUERY, {
         collectionAddresses: [context?.collectionAddress],
-        paginationLimit: 5,
       })
   );
 
@@ -91,12 +83,11 @@ export const useBidsForToken = (tokenId: string | undefined) => {
   const parsedBids = results
     ?.map((bid: any) => {
       let data = bid.properties.properties;
-      console.log(data);
 
       return {
         transactionHash: bid.transactionInfo.transactionHash,
         amount: data.amountPrice.chainTokenPrice.decimal,
-        bidder: truncateString(data.bidder, 6),
+        bidder: data.bidder,
         tokenId: data.tokenId,
       };
     })

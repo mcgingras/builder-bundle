@@ -67,16 +67,9 @@ const ActiveAuctionImage = ({
 
 const AuctionTitleMetadata = ({ className }: { className: string }) => {
   const { data } = useActiveAuction();
+  const { token } = useTokenMetadata(data?.tokenId);
 
-  return (
-    <>
-      {data && (
-        <span className={className}>
-          {data?.collectionName} {data?.tokenId}
-        </span>
-      )}
-    </>
-  );
+  return <>{data && <span className={className}>{token?.name}</span>}</>;
 };
 
 const AuctionPriceMetadata = ({ className }: { className: string }) => {
@@ -97,7 +90,7 @@ const AuctionCountdown = ({ className }: { className: string }) => {
   const { data } = useActiveAuction();
 
   return data ? (
-    <Countdown endTime={parseInt(data?.endTime)} className={className} />
+    <Countdown endTime={data?.endTime || 0} className={className} />
   ) : (
     <></>
   );

@@ -1,19 +1,17 @@
 import useSWR from "swr";
 import { DocumentNode } from "graphql";
-import { GraphQLClient } from "graphql-request";
 import useBuilderContext from "./useBuilderContext";
-import { ALL_AUCTIONS_QUERY } from "../data/queries/allAuctions";
+import { graphlQLClient } from "../data/graphql/client";
+import { ALL_AUCTIONS_QUERY } from "../data/graphql/queries/allAuctions";
 
-export const client = new GraphQLClient("https://api.zora.co/graphql", {
-  method: "POST",
-  headers: new Headers({
-    "Content-Type": "application/json",
-  }),
-});
+/**
+ * useAuction
+ * fetches all historical auctions.
+ */
 
 async function fetcher(query: DocumentNode, vars?: any) {
   try {
-    const response = await client.request(query, vars);
+    const response = await graphlQLClient.request(query, vars);
     return response;
   } catch (err) {
     console.error(err);

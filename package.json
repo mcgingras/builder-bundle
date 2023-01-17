@@ -1,7 +1,7 @@
 {
   "name": "builder-bundle",
-  "version": "0.0.6",
-  "description": "Headless UI component library for nouns builder ecosystem.",
+  "version": "0.0.7",
+  "description": "UI component and hook library for the Nouns Builder ecosystem.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
@@ -18,7 +18,7 @@
     "web3",
     "react"
   ],
-  "author": "0xmcg (frog)",
+  "author": "Michael Gingras (frog, lilfrog.eth)",
   "license": "MIT",
   "devDependencies": {
     "@types/react": "^18.0.26",
