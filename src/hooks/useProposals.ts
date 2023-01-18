@@ -24,7 +24,8 @@ async function fetcher(query: DocumentNode, vars?: any) {
 
     return parsedProposals;
   } catch (err) {
-    console.error(err);
+    console.error("error:", err);
+    throw new Error("error");
   }
 }
 
@@ -37,13 +38,16 @@ async function proposalsFetcher(contract: any) {
 export const useProposals = () => {
   const contractContext = useContractContext();
 
-  const { data: proposalsData } = useSWR(
-    contractContext?.governorContract ? `proposals` : null,
-    async () => proposalsFetcher(contractContext?.governorContract)
+  const {
+    data: proposalsData,
+    error,
+    isLoading,
+  } = useSWR(contractContext?.governorContract ? `proposals` : null, async () =>
+    proposalsFetcher(contractContext?.governorContract)
   );
 
   // todo: data, error, loading
-  return { data: proposalsData };
+  return { data: proposalsData, error, isLoading };
 };
 
 // ------------------------------------------------------
@@ -54,11 +58,13 @@ export const useProposals = () => {
 export const useProposalsDeprecated = () => {
   const context = useBuilderContext();
 
-  const { data } = useSWR(`proposals-${context?.governorAddress}`, async () =>
-    fetcher(ALL_PROPOSALS_QUERY, {
-      governorAddresses: [context?.governorAddress],
-    })
+  const { data, error, isLoading } = useSWR(
+    `proposals-${context?.governorAddress}`,
+    async () =>
+      fetcher(ALL_PROPOSALS_QUERY, {
+        governorAddresses: [context?.governorAddress],
+      })
   );
 
-  return { proposals: data };
+  return { proposals: data, error, isLoading };
 };

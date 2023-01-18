@@ -39,7 +39,7 @@ const ContractProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     loadContracts();
-  }, []);
+  }, [context]);
 
   return (
     <ContractContext.Provider

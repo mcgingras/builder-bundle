@@ -62,8 +62,7 @@ export type Token = {
 export type Bid = {
   bidder: string;
   amount: string;
-  date: string;
-  link: string;
+  tokenId: number;
   transactionHash: string;
 };
 

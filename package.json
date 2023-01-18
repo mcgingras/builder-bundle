@@ -1,6 +1,6 @@
 {
   "name": "builder-bundle",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "UI component and hook library for the Nouns Builder ecosystem.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -16,7 +16,9 @@
     "nouns",
     "ethereum",
     "web3",
-    "react"
+    "react",
+    "hooks",
+    "ui-components"
   ],
   "author": "Michael Gingras (frog, lilfrog.eth)",
   "license": "MIT",

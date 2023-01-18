@@ -10,11 +10,15 @@ async function proposalFetcher(contract: any, proposalId: string) {
 // fetch a single proposal by its ID
 export const useProposal = (proposalId: string) => {
   const contractContext = useContractContext();
-  const { data: proposalData } = useSWR(
+  const {
+    data: proposalData,
+    error,
+    isLoading,
+  } = useSWR(
     contractContext?.governorContract ? `proposal-state` : null,
     async () => proposalFetcher(contractContext?.governorContract, proposalId)
   );
 
   // possibly return error and loading? {data, loading, error}
-  return { data: proposalData };
+  return { data: proposalData, error, isLoading };
 };

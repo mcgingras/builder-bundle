@@ -17,8 +17,8 @@ async function fetcher(query: DocumentNode, vars?: any) {
     const response = await graphlQLClient.request(query, vars);
     return toAuctionType(response.nouns.nounsMarkets.nodes[0]);
   } catch (err) {
-    console.error(err);
-    return err;
+    console.error("error:", err);
+    throw new Error("error");
   }
 }
 
@@ -31,7 +31,7 @@ export const useAuction = (tokenId: string) => {
   const context = useBuilderContext();
   const contractContext = useContractContext();
 
-  const { data } = useSWR(
+  const { data, error, isLoading } = useSWR(
     contractContext?.collectionContract
       ? `auction-${context?.collectionAddress}-${tokenId}`
       : null,
@@ -42,7 +42,7 @@ export const useAuction = (tokenId: string) => {
       })
   );
 
-  const { data: recipientData } = useSWR(
+  const { data: recipientData, isLoading: recipientLoading } = useSWR(
     contractContext?.collectionContract ? `recipient-${tokenId}` : null,
     async () =>
       scheduledRecipientFetcher(
@@ -64,5 +64,5 @@ export const useAuction = (tokenId: string) => {
     return { data: founderAuction };
   }
 
-  return { data };
+  return { data, error, isLoading: isLoading || recipientLoading };
 };

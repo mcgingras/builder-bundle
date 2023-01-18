@@ -14,14 +14,14 @@ async function fetcher(query: DocumentNode, vars?: any) {
       image: response.token.token.metadata.image,
     } as Token;
   } catch (err) {
-    console.error(err);
+    console.error("error:", err);
     throw new Error("error");
   }
 }
 
 export const useTokenMetadata = (tokenId: string | undefined) => {
   const context = useBuilderContext();
-  const { data } = useSWR(
+  const { data, error, isLoading } = useSWR(
     tokenId ? `token-metadata-${tokenId}` : null,
     async () =>
       fetcher(TOKEN_METADATA_QUERY, {
@@ -30,5 +30,5 @@ export const useTokenMetadata = (tokenId: string | undefined) => {
       })
   );
 
-  return { token: data };
+  return { token: data, error, isLoading };
 };

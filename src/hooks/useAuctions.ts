@@ -14,13 +14,14 @@ async function fetcher(query: DocumentNode, vars?: any) {
     const response = await graphlQLClient.request(query, vars);
     return response;
   } catch (err) {
-    console.error(err);
+    console.error("error:", err);
+    throw new Error("error");
   }
 }
 
 export const useAuctions = () => {
   const context = useBuilderContext();
-  const { data } = useSWR(
+  const { data, error, isLoading } = useSWR(
     `all-auctions-${context?.collectionAddress}`,
     async () =>
       fetcher(ALL_AUCTIONS_QUERY, {
@@ -28,6 +29,5 @@ export const useAuctions = () => {
       })
   );
 
-  // parse data into nicer format before returning int
-  return { data };
+  return { data, error, isLoading };
 };

@@ -1,5 +1,5 @@
 export { useAuctions as useAuctionByTokenId } from "./useAuctions";
-export { useBidsForTokenId } from "./useBidsForToken";
+export { useBidsForToken } from "./useBidsForToken";
 export { useActiveAuction } from "./useActiveAuction";
 export { useAuction } from "./useAuction";
 export { useTokenMetadata } from "./useTokenMetadata";

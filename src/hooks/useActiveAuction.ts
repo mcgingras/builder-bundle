@@ -15,14 +15,14 @@ async function fetcher(query: DocumentNode, vars?: any) {
     const response = await graphlQLClient.request(query, vars);
     return toAuctionType(response.nouns.nounsActiveMarket);
   } catch (err) {
-    console.error(err);
-    throw new Error("Error");
+    console.error("error:", err);
+    throw new Error("error");
   }
 }
 
 export const useActiveAuction = () => {
   const context = useBuilderContext();
-  const { data } = useSWR(
+  const { data, error, isLoading } = useSWR(
     `current-auction-${context?.collectionAddress}`,
     async () =>
       fetcher(CURRENT_AUCTION_QUERY, {
@@ -30,5 +30,5 @@ export const useActiveAuction = () => {
       })
   );
 
-  return { data };
+  return { data, error, isLoading };
 };
